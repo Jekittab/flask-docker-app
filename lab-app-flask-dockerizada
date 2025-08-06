@@ -1,0 +1,94 @@
+🚀 Paso 4 – Crear una App Flask y Dockerizarla
+🎯 Objetivo:
+Crear una app real (aunque sea simple)
+
+Meterla en un contenedor usando Docker
+
+Ejecutarla desde tu terminal en http://localhost
+
+🧱 1. Crea la estructura del proyecto
+En la terminal:
+
+bash
+Copiar
+Editar
+mkdir flask-docker-app
+cd flask-docker-app
+Dentro de esa carpeta crea 2 archivos:
+
+🟡 app.py
+python
+Copiar
+Editar
+from flask import Flask
+app = Flask(__name__)
+
+@app.route('/')
+def home():
+    return "¡Hola desde Flask en Docker!"
+
+if __name__ == '__main__':
+    app.run(host='0.0.0.0', port=5000)
+🟡 requirements.txt
+nginx
+Copiar
+Editar
+flask
+🐳 2. Crea el Dockerfile
+Crea un archivo llamado Dockerfile (sin extensión) en la misma carpeta:
+
+Dockerfile
+Copiar
+Editar
+# Imagen base
+FROM python:3.9
+
+# Establecer directorio de trabajo
+WORKDIR /app
+
+# Copiar archivos
+COPY requirements.txt .
+RUN pip install -r requirements.txt
+
+COPY . .
+
+# Comando para ejecutar la app
+CMD ["python", "app.py"]
+🔧 3. Construye y ejecuta el contenedor
+En la terminal, estando dentro de la carpeta:
+
+bash
+Copiar
+Editar
+docker build -t flask-app .
+Cuando termine, ejecuta:
+
+bash
+Copiar
+Editar
+docker run -d -p 5000:5000 flask-app
+📌 Ahora abre tu navegador y ve a:
+👉 http://localhost:5000
+
+✅ Deberías ver: ¡Hola desde Flask en Docker!
+
+🛠️ 4. Verifica contenedor y prueba comandos
+bash
+Copiar
+Editar
+docker ps            # ver contenedores activos
+docker logs ID       # ver registros
+docker stop ID       # detener contenedor
+📤 5. Sube el proyecto a GitHub
+Crea un nuevo repo en GitHub: flask-docker-app
+
+Conecta tu proyecto y súbelo:
+
+bash
+Copiar
+Editar
+git init
+git add .
+git commit -m "App Flask dockerizada"
+git remote add origin https://github.com/TU_USUARIO/flask-docker-app.git
+git push -u origin main
